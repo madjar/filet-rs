@@ -1,5 +1,6 @@
 use collections::Vec;
 use std::cell::RefCell;
+use std::rand::random;
 
 pub struct Bubble {
     pub x: f64,
@@ -8,8 +9,8 @@ pub struct Bubble {
 
 pub type Node = RefCell<Bubble>;
 
-pub fn make_node<T: ToPrimitive>(x: T, y: T) -> Node {
-    RefCell::new(Bubble {x: x.to_f64().unwrap(), y: y.to_f64().unwrap()})
+pub fn make_node(x: f64, y: f64) -> Node {
+    RefCell::new(Bubble {x: x, y: y})
 }
 
 pub struct Graph<'a> {
@@ -18,10 +19,27 @@ pub struct Graph<'a> {
 }
 
 impl<'a> Graph<'a> {
-    pub fn from_fn(size: uint, op: |uint| -> Node) -> Graph {
+    pub fn random(size: uint, height: uint, width: uint) -> Graph {
         Graph {
-            nodes: Vec::from_fn(size, op),
+            nodes: Vec::from_fn(size, |_| make_node((height as f64) * random(),
+                                                    (width as f64) * random())),
             edges: Vec::new(),
         }
+    }
+
+    pub fn randomized_edges(nodes: &'a Vec<Node>) -> Vec<(&'a Node, &'a Node)>{
+        let mut edges = Vec::new();
+        for i in range(0, 10u) {
+            for j in range(i + 1, 10u) {
+                if random::<f64>() < 0.3 {
+                    edges.push((nodes.get(i), nodes.get(j)));
+                }
+            }
+        }
+        edges
+    }
+
+    pub fn disperse(&self) {
+        
     }
 }

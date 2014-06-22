@@ -8,12 +8,14 @@ extern crate debug;
 use piston::{
     GameIterator,
     GameIteratorSettings,
+
     GameWindowSDL2,
     GameWindowSettings,
 };
 
 mod game;
 mod graph;
+mod ordfloat;
 
 #[start]
 fn start(argc: int, argv: **u8) -> int {

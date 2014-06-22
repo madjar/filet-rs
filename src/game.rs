@@ -1,4 +1,3 @@
-
 use graphics::*;
 use piston::{
     GameIterator,
@@ -13,24 +12,11 @@ use piston::mouse;
 use graph::{
     Graph,
     Node,
-    make_node,
 };
-
+use std::rand::random;
+use ordfloat::OrdFloat;
 
 static RADIUS: f64 = 30.;
-
-#[deriving(PartialEq, PartialOrd)]
-struct OrdFloat(f64);
-
-impl Eq for OrdFloat {}
-
-impl Ord for OrdFloat {
-    fn cmp(&self, other: &OrdFloat) -> Ordering {
-        if self < other { Less }
-        else if self > other { Greater }
-        else { Equal }
-    }
-}
 
 fn closest<'a>(graph: &'a Graph, x: f64, y: f64, threshold: f64) -> Option<&'a Node> {
     let distance = |n: &&Node| {
@@ -49,7 +35,8 @@ pub fn play<'a, W: GameWindow>(mut game_iter: GameIterator<'a, W>) {
     let mut mousex = 0.;
     let mut mousey = 0.;
 
-    let graph = Graph::from_fn(10, |i| make_node(i * 50, i * 60));
+    let mut graph = Graph::random(10, 500, 600);
+    graph.edges = Graph::randomized_edges(&graph.nodes);
 
     loop {
         match game_iter.next() {
@@ -59,14 +46,26 @@ pub fn play<'a, W: GameWindow>(mut game_iter: GameIterator<'a, W>) {
                     gl.viewport(0, 0, args.width as i32, args.height as i32);
                     let c = Context::abs(args.width as f64, args.height as f64);
                     c.rgb(1.0, 1.0, 1.0).clear(gl);
+                    for &(n1, n2) in graph.edges.iter() {
+                        let n1 = n1.borrow();
+                        let n2 = n2.borrow();
+                        c.line(n1.x, n1.y, n2.x, n2.y)
+                            .grey(0.)
+                            .square_border_width(3.)
+                            .stroke(gl);
+                    }
                     for n in graph.nodes.iter() {
                         let n = n.borrow();
-                        c.circle(n.x, n.y, RADIUS).rgb(0.1, 0.8, 0.8).fill(gl);
+                        c.circle(n.x, n.y, RADIUS)
+                            .rgb(1., 0., 0.)
+                            .fill(gl);
                     }
                 },
                 MousePress(args) => {
                     if args.button == mouse::Left {
                         selected = closest(&graph, mousex, mousey, RADIUS);
+                    } else if args.button == mouse::Middle {
+                        graph.disperse();
                     }
                 }
                 MouseRelease(args) => {

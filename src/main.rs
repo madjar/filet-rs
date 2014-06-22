@@ -22,13 +22,12 @@ fn start(argc: int, argv: **u8) -> int {
 }
 
 fn main() {
-    let mut window: GameWindowSDL2 = GameWindow::new(
+    let mut window = GameWindowSDL2::new(
         GameWindowSettings {
             title: "Filet".to_string(),
             size: [600, 600],
             fullscreen: false,
             exit_on_esc: true,
-            background_color: [1.0, 1.0, 1.0, 1.0],
         }
     );
 

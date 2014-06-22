@@ -3,11 +3,11 @@
 extern crate graphics;
 extern crate piston;
 extern crate collections;
+extern crate debug;
 
 use piston::{
     GameIterator,
     GameIteratorSettings,
-    GameWindow,
     GameWindowSDL2,
     GameWindowSettings,
 };

@@ -13,9 +13,8 @@ use piston::mouse;
 use graph::{
     Graph,
     Node,
-    Bubble,
+    make_node,
 };
-use std::cell::RefCell;
 
 
 static RADIUS: f64 = 30.;
@@ -50,11 +49,8 @@ pub fn play<'a, W: GameWindow>(mut game_iter: GameIterator<'a, W>) {
     let mut mousex = 0.;
     let mut mousey = 0.;
 
-    let graph = Graph::from_fn(10, |i| RefCell::new(Bubble {
-            x: (i as f64) * 50.,
-            y: (i as f64) * 60.,
-        }));
-    
+    let graph = Graph::from_fn(10, |i| make_node(i * 50, i * 60));
+
     loop {
         match game_iter.next() {
             None => { break },

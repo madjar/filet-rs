@@ -8,6 +8,10 @@ pub struct Bubble {
 
 pub type Node = RefCell<Bubble>;
 
+pub fn make_node<T: ToPrimitive>(x: T, y: T) -> Node {
+    RefCell::new(Bubble {x: x.to_f64().unwrap(), y: y.to_f64().unwrap()})
+}
+
 pub struct Graph<'a> {
     pub nodes: Vec<Node>,
     pub edges: Vec<(&'a Node, &'a Node)>,

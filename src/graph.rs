@@ -1,6 +1,12 @@
 use collections::Vec;
 use std::cell::RefCell;
 use std::rand::random;
+use ordfloat::OrdFloat;
+use std::iter::{
+    NoElements,
+    OneElement,
+    MinMax
+};
 
 pub struct Bubble {
     pub x: f64,
@@ -39,7 +45,19 @@ impl<'a> Graph<'a> {
         edges
     }
 
-    pub fn disperse(&self) {
+    pub fn disperse(&self, height: uint, width: uint) {
+        let (OrdFloat(xmin), OrdFloat(xmax)) =
+            match self.nodes.iter()
+                            .map(|n| OrdFloat(n.borrow().x))
+                            .min_max() {
+            MinMax(a, b) => (a, b),
+            OneElement(a) => (a, a),
+            NoElements => (OrdFloat(0.), OrdFloat(0.)),
+        };
         
+        for n in self.nodes.iter() {
+            let mut n = n.borrow_mut();
+            n.x = (n.x - xmin) / (xmax - xmin) * (width as f64);
+        }
     }
 }

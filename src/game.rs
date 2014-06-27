@@ -68,7 +68,7 @@ pub fn play<'a, W: GameWindow>(mut game_iter: GameIterator<'a, W>) {
                     if args.button == mouse::Left {
                         selected = closest(&graph, mousex, mousey, RADIUS);
                     } else if args.button == mouse::Middle {
-                        graph.disperse();
+                        graph.disperse(500, 600);
                     }
                 }
                 MouseRelease(args) => {

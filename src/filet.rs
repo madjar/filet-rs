@@ -2,14 +2,15 @@
 
 extern crate graphics;
 extern crate piston;
+extern crate sdl2_game_window;
+extern crate opengl_graphics;
 extern crate collections;
 extern crate debug;
 
+use sdl2_game_window::GameWindowSDL2;
 use piston::{
     GameIterator,
     GameIteratorSettings,
-
-    GameWindowSDL2,
     GameWindowSettings,
 };
 

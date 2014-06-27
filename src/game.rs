@@ -1,4 +1,7 @@
 use graphics::*;
+use opengl_graphics::{
+    Gl,
+};
 use piston::{
     GameIterator,
     GameWindow,
@@ -45,20 +48,20 @@ pub fn play<'a, W: GameWindow>(mut game_iter: GameIterator<'a, W>) {
                 Render(args) => {
                     gl.viewport(0, 0, args.width as i32, args.height as i32);
                     let c = Context::abs(args.width as f64, args.height as f64);
-                    c.rgb(1.0, 1.0, 1.0).clear(gl);
+                    c.rgb(1.0, 1.0, 1.0).draw(gl);
                     for &(n1, n2) in graph.edges.iter() {
                         let n1 = n1.borrow();
                         let n2 = n2.borrow();
                         c.line(n1.x, n1.y, n2.x, n2.y)
                             .grey(0.)
                             .square_border_width(3.)
-                            .stroke(gl);
+                            .draw(gl);
                     }
                     for n in graph.nodes.iter() {
                         let n = n.borrow();
                         c.circle(n.x, n.y, RADIUS)
                             .rgb(1., 0., 0.)
-                            .fill(gl);
+                            .draw(gl);
                     }
                 },
                 MousePress(args) => {

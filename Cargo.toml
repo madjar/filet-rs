@@ -1,0 +1,26 @@
+[project]
+
+name = "filet"
+version = "0.0.0"
+
+authors = ["Georges Dubus <georges.dubus@compiletoi.net>"]
+
+[[bin]]
+
+name = "filet"
+
+[dependencies.piston]
+
+git = "https://github.com/PistonDevelopers/piston"
+
+[dependencies.graphics]
+
+git = "https://github.com/PistonDevelopers/rust-graphics"
+
+[dependencies.sdl2_game_window]
+
+git = "https://github.com/pistondevelopers/sdl2_game_window"
+
+[dependencies.opengl_graphics]
+
+git = "https://github.com/pistondevelopers/opengl_graphics"

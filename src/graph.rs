@@ -51,6 +51,37 @@ impl<'a> Graph<'a> {
         edges
     }
 
+    pub fn edges_crossed(&'a self) -> Vec<(&'a (&'a Node, &'a Node), bool)>{
+        let mut crossed = Vec::from_elem(self.edges.len(), false);
+
+        let ccw = |a: &Node, b: &Node, c: &Node| {
+            let a = a.borrow();
+            let b = b.borrow();
+            let c = c.borrow();
+            (c.y-a.y) * (b.x-a.x) > (b.y-a.y) * (c.x-a.x)}
+        ;
+
+        for i in range(0, self.edges.len()) {
+            for j in range(i + 1, self.edges.len()) {
+                let &(a, b) = self.edges.get(i);
+                let &(c, d) = self.edges.get(j);
+
+                let intersect = (a as *_) != (c as *_)
+                    && (b as *_) != (c as *_)
+                    && (a as *_) != (d as *_)
+                    && (b as *_) != (d as *_)
+                    && ccw(a,c,d) != ccw(b,c,d)
+                    && ccw(a,b,c) != ccw(a,b,d);
+
+                if intersect {
+                    *crossed.get_mut(i) = true;
+                    *crossed.get_mut(j) = true;
+                }
+            }
+        }
+        self.edges.iter().zip(crossed.move_iter()).collect()
+    }
+
     pub fn disperse(&self) {
         let min_max_by = |f: |Ref<Bubble>| -> f64| {
             let (OrdFloat(min), OrdFloat(max)) =

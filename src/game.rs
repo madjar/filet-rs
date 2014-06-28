@@ -49,18 +49,36 @@ pub fn play<'a, W: GameWindow>(mut game_iter: GameIterator<'a, W>, width: f64, h
                     gl.viewport(0, 0, args.width as i32, args.height as i32);
                     let c = Context::abs(args.width as f64, args.height as f64);
                     c.rgb(1.0, 1.0, 1.0).draw(gl);
-                    for &(n1, n2) in graph.edges.iter() {
+                    let edges_crossed = graph.edges_crossed();
+                    let victory = edges_crossed.iter()
+                        .all(|&(_, crossed)| !crossed);
+                    for &(&(n1, n2), crossed) in edges_crossed.iter() {
                         let n1 = n1.borrow();
                         let n2 = n2.borrow();
+                        let color = if crossed {
+                            [1., 0., 0., 1.]
+                        } else {
+                            [0., 0., 0., 1.]
+                        };
+
                         c.line(n1.x, n1.y, n2.x, n2.y)
-                            .grey(0.)
                             .square_border_width(3.)
+                            .color(color)
                             .draw(gl);
                     }
+
+                    let node_color = if victory {
+                        [0., 1., 0., 1.]
+                    } else {
+                        [1., 0., 0., 1.]
+                    };
                     for n in graph.nodes.iter() {
                         let n = n.borrow();
+                        c.circle(n.x, n.y, RADIUS + 3.)
+                            .rgb(0., 0., 0.)
+                            .draw(gl);
                         c.circle(n.x, n.y, RADIUS)
-                            .rgb(1., 0., 0.)
+                            .color(node_color)
                             .draw(gl);
                     }
                 },

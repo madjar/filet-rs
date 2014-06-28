@@ -19,7 +19,7 @@ use graph::{
 use std::rand::random;
 use ordfloat::OrdFloat;
 
-static RADIUS: f64 = 30.;
+pub static RADIUS: f64 = 30.;
 
 fn closest<'a>(graph: &'a Graph, x: f64, y: f64, threshold: f64) -> Option<&'a Node> {
     let distance = |n: &&Node| {
@@ -31,14 +31,14 @@ fn closest<'a>(graph: &'a Graph, x: f64, y: f64, threshold: f64) -> Option<&'a N
         .filtered(|n| distance(n) < threshold * threshold)
 }
 
-pub fn play<'a, W: GameWindow>(mut game_iter: GameIterator<'a, W>) {
+pub fn play<'a, W: GameWindow>(mut game_iter: GameIterator<'a, W>, width: f64, height: f64) {
     let ref mut gl = Gl::new();
 
     let mut selected: Option<&Node> = None;
     let mut mousex = 0.;
     let mut mousey = 0.;
 
-    let mut graph = Graph::random(10, 500, 600);
+    let mut graph = Graph::random(10, width, height);
     graph.edges = Graph::randomized_edges(&graph.nodes);
 
     loop {
@@ -68,7 +68,7 @@ pub fn play<'a, W: GameWindow>(mut game_iter: GameIterator<'a, W>) {
                     if args.button == mouse::Left {
                         selected = closest(&graph, mousex, mousey, RADIUS);
                     } else if args.button == mouse::Middle {
-                        graph.disperse(500, 600);
+                        graph.disperse();
                     }
                 }
                 MouseRelease(args) => {

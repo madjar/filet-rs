@@ -40,5 +40,5 @@ fn main() {
     };
 
     let game_iter = GameIterator::new(&mut window, &game_iter_settings);
-    game::play(game_iter);
+    game::play(game_iter, 600., 600.);
 }

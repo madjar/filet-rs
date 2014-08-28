@@ -5,10 +5,6 @@ version = "0.0.0"
 
 authors = ["Georges Dubus <georges.dubus@compiletoi.net>"]
 
-[[bin]]
-
-name = "filet"
-
 [dependencies.piston]
 
 git = "https://github.com/PistonDevelopers/piston.git"

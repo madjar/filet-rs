@@ -29,7 +29,7 @@ pub struct Graph<'a> {
 }
 
 impl<'a> Graph<'a> {
-    pub fn random(size: uint, width: f64, height: f64) -> Graph {
+    pub fn random(size: uint, width: f64, height: f64) -> Graph<'a> {
         Graph {
             nodes: Vec::from_fn(size, |_| make_node(height * rand::random(),
                                                     width * rand::random())),
@@ -44,7 +44,7 @@ impl<'a> Graph<'a> {
         for i in range(0, nodes.len()) {
             for j in range(i + 1, nodes.len()) {
                 if rand::random::<f64>() < 0.3 {
-                    edges.push((nodes.get(i), nodes.get(j)));
+                    edges.push((&nodes[i], &nodes[j]));
                 }
             }
         }
@@ -63,13 +63,13 @@ impl<'a> Graph<'a> {
 
         for i in range(0, self.edges.len()) {
             for j in range(i + 1, self.edges.len()) {
-                let &(a, b) = self.edges.get(i);
-                let &(c, d) = self.edges.get(j);
+                let &(a, b) = &self.edges[i];
+                let &(c, d) = &self.edges[j];
 
-                let intersect = (a as *_) != (c as *_)
-                    && (b as *_) != (c as *_)
-                    && (a as *_) != (d as *_)
-                    && (b as *_) != (d as *_)
+                let intersect = (a as *const _) != (c as *const _)
+                    && (b as *const _) != (c as *const _)
+                    && (a as *const _) != (d as *const _)
+                    && (b as *const _) != (d as *const _)
                     && ccw(a,c,d) != ccw(b,c,d)
                     && ccw(a,b,c) != ccw(a,b,d);
 

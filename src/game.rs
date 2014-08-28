@@ -3,15 +3,20 @@ use opengl_graphics::{
     Gl,
 };
 use piston::{
+    Input,
     GameIterator,
     GameWindow,
-    MousePress,
-    MouseRelease,
-    MouseRelativeMove,
-    MouseMove,
     Render,
 };
-use piston::mouse;
+use input::{
+    Press,
+    Release,
+    Move,
+    Mouse,
+    MouseRelative,
+    MouseCursor,
+};
+use input::mouse;
 use graph::{
     Graph,
     Node,
@@ -82,35 +87,32 @@ pub fn play<'a, W: GameWindow>(mut game_iter: GameIterator<'a, W>, width: f64, h
                             .draw(gl);
                     }
                 },
-                MousePress(args) => {
-                    if args.button == mouse::Left {
-                        selected = closest(&graph, mousex, mousey, RADIUS);
-                    } else if args.button == mouse::Middle {
-                        graph.disperse();
-                    }
+                Input(Press(Mouse(mouse::Left))) => {
+                    selected = closest(&graph, mousex, mousey, RADIUS);
                 }
-                MouseRelease(args) => {
-                    if args.button == mouse::Left {
-                        selected = None;
-                    }
+                Input(Press(Mouse(mouse::Middle))) => {
+                    graph.disperse();
                 }
-                MouseRelativeMove(args) => {
+                Input(Release(Mouse(mouse::Left))) => {
+                    selected = None;
+                }
+                Input(Move(MouseRelative(dx, dy))) => {
                     match selected {
                         Some(ref n) => {
                             let mut n = n.borrow_mut();
-                            n.x += args.dx;
-                            n.y += args.dy;
+                            n.x += dx;
+                            n.y += dy;
                         }
                         None => {}
                     };
                 }
-                MouseMove(args) => {
-                    mousex = args.x;
-                    mousey = args.y;
+                Input(Move(MouseCursor(x, y))) => {
+                    mousex = x;
+                    mousey = y;
                 }
                 _ => {},
             }
-        }        
+        }
     }
 
 }

@@ -11,16 +11,16 @@ name = "filet"
 
 [dependencies.piston]
 
-git = "https://github.com/PistonDevelopers/piston"
+git = "https://github.com/PistonDevelopers/piston.git"
 
 [dependencies.graphics]
 
-git = "https://github.com/PistonDevelopers/rust-graphics"
+git = "https://github.com/PistonDevelopers/rust-graphics.git"
 
 [dependencies.sdl2_game_window]
 
-git = "https://github.com/pistondevelopers/sdl2_game_window"
+git = "https://github.com/pistondevelopers/sdl2_game_window.git"
 
 [dependencies.opengl_graphics]
 
-git = "https://github.com/pistondevelopers/opengl_graphics"
+git = "https://github.com/pistondevelopers/opengl_graphics.git"

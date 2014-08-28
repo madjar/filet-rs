@@ -2,6 +2,7 @@
 
 extern crate graphics;
 extern crate piston;
+extern crate input;
 extern crate sdl2_game_window;
 extern crate opengl_graphics;
 extern crate collections;
@@ -18,14 +19,10 @@ mod game;
 mod graph;
 mod ordfloat;
 
-#[start]
-fn start(argc: int, argv: **u8) -> int {
-    // Run gui on the main thread.
-    native::start(argc, argv, main)
-}
 
 fn main() {
     let mut window = GameWindowSDL2::new(
+        piston::shader_version::opengl::OpenGL_3_2,
         GameWindowSettings {
             title: "Filet".to_string(),
             size: [600, 600],

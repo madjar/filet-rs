@@ -9,10 +9,6 @@ authors = ["Georges Dubus <georges.dubus@compiletoi.net>"]
 
 git = "https://github.com/PistonDevelopers/piston.git"
 
-[dependencies.graphics]
-
-git = "https://github.com/PistonDevelopers/rust-graphics.git"
-
 [dependencies.sdl2_game_window]
 
 git = "https://github.com/pistondevelopers/sdl2_game_window.git"
